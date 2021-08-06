@@ -1,27 +1,22 @@
-import json
 import sys
 
 
-def filling(val):
-    for i in range(len(val)):
-        if val[i].get('value') is not None:
-            val[i]['value'] = values_dict[val[i]['id']]
-        if val[i].get('values') is not None:
-            filling(val[i]['values'])
-
-
-with open(f'{sys.argv[1]}', 'r') as f:
-    tests = json.loads(f.read())
-
-with open(f'{sys.argv[2]}', 'r') as f:
-    values = json.loads(f.read())
-
-values_dict = {}
-values = values['values']
-for i in values:
-    values_dict[i['id']] = i['value']
-
-filling(tests['tests'])
-
-with open("report.json", "w") as f:
-    json.dump(tests, f, ensure_ascii=False, indent=1)
+n = int(sys.argv[1])
+m = int(sys.argv[2])
+mass = [int(i) for i in range(1, n + 1)]
+result = []
+value_n = 0
+value_m = 0
+while True:
+    value_m += 1
+    value_n += 1
+    if value_m == m:
+        value_m = 0
+        result.append(str(mass[value_n - n % m]) if value_n - m < -
+                      len(mass) else str(mass[value_n - m]))
+        if value_n == 1:
+            break
+        value_n -= 1
+    if value_n == n:
+        value_n = 0
+print(''.join(result))
